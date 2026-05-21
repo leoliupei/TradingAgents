@@ -115,8 +115,8 @@ class MinimaxChatOpenAI(NormalizedChatOpenAI):
     M2.x reasoning models embed ``<think>...</think>`` blocks directly in
     ``message.content`` by default, which would pollute saved reports.
     Per platform.minimax.io/docs/api-reference/text-openai-api, setting
-    ``reasoning_split=True`` in the request body redirects the thinking
-    block into ``reasoning_details`` so ``content`` stays clean.
+    ``reasoning_split=True`` redirects the thinking block into
+    ``reasoning_details`` so ``content`` stays clean.
 
     The flag is gated by ``ModelCapabilities.requires_reasoning_split``
     because non-reasoning MiniMax endpoints (Coding Plan, MiniMax-Text-01)
@@ -132,7 +132,10 @@ class MinimaxChatOpenAI(NormalizedChatOpenAI):
     def _get_request_payload(self, input_, *, stop=None, **kwargs):
         payload = super()._get_request_payload(input_, stop=stop, **kwargs)
         if get_capabilities(self.model_name).requires_reasoning_split:
-            payload.setdefault("reasoning_split", True)
+            reasoning_split = payload.pop("reasoning_split", True)
+            extra_body = dict(payload.get("extra_body") or {})
+            extra_body.setdefault("reasoning_split", reasoning_split)
+            payload["extra_body"] = extra_body
         return payload
 
 

@@ -1,0 +1,28 @@
+{
+  "name": "tradingagents-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "dev:lan": "vite --host 0.0.0.0 --port 5173",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "dayjs": "^1.11.13",
+    "dompurify": "^3.2.6",
+    "element-plus": "^2.10.4",
+    "marked": "^15.0.12",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.17"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.0.5",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vue-tsc": "^2.2.10"
+  }
+}

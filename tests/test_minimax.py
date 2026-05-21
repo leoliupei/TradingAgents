@@ -25,9 +25,10 @@ def _client(model: str = "MiniMax-M2.7"):
 
 @pytest.mark.unit
 class TestMinimaxReasoningSplit:
-    def test_request_payload_sets_reasoning_split(self):
+    def test_request_payload_sets_reasoning_split_in_extra_body(self):
         payload = _client()._get_request_payload([HumanMessage(content="hi")])
-        assert payload.get("reasoning_split") is True
+        assert "reasoning_split" not in payload
+        assert payload.get("extra_body", {}).get("reasoning_split") is True
 
     def test_caller_supplied_reasoning_split_is_preserved(self):
         """If the user explicitly sets reasoning_split, don't override it
@@ -37,10 +38,8 @@ class TestMinimaxReasoningSplit:
             [HumanMessage(content="hi")],
             reasoning_split=False,
         )
-        # langchain may or may not surface that kwarg into the payload;
-        # what matters is we don't blindly overwrite a non-default value
-        # the caller passed. setdefault leaves an existing value alone.
-        assert payload.get("reasoning_split") in (False, True)
+        assert "reasoning_split" not in payload
+        assert payload.get("extra_body", {}).get("reasoning_split") is False
 
     def test_non_reasoning_minimax_does_not_inject_reasoning_split(self):
         """Coding Plan / MiniMax-Text-01 / any non-M2-prefixed model must NOT

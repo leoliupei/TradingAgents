@@ -217,3 +217,9 @@ __marimo__/
 
 # Cache
 **/data_cache/
+
+# Web frontend
+frontend/node_modules/
+frontend/dist/
+.tradingagents-web/
+output/playwright/
